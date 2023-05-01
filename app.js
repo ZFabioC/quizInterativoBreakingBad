@@ -1,6 +1,9 @@
 const form = document.querySelector('.quiz-form')
+const viewScore = document.querySelector('.result')
+const scores = document.querySelector('.score')
+const buttonPlayAgain = document.querySelector('.play-again')
 
-const correctAnswers = ['A', 'B', 'C', 'C', 'B']
+const correctAnswers = ['B', 'B', 'C', 'A', 'B']
 
 form.addEventListener('submit', event => {
     event.preventDefault()
@@ -22,7 +25,23 @@ form.addEventListener('submit', event => {
         }
     })
 
-    console.log(score)
+    scrollTo(0, 0)
+    viewScore.classList.remove('d-none')
+    let toFinalScore = 0 
+
+    const timer = setInterval(() => {
+
+        if(toFinalScore === score){
+            clearInterval(timer)
+            return
+        }
     
-    
+        toFinalScore++
+        scores.textContent = toFinalScore
+        
+    }, 50);    
+})
+
+buttonPlayAgain.addEventListener('click', () => {
+    location.reload()
 })

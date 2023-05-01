@@ -1,47 +1,64 @@
 const form = document.querySelector('.quiz-form')
-const viewScore = document.querySelector('.result')
-const scores = document.querySelector('.score')
+const finalScoreContainer = document.querySelector('.final-score-container')
+const finalScore = document.querySelector('.final-score')
 const buttonPlayAgain = document.querySelector('.play-again')
 
-const correctAnswers = ['B', 'B', 'C', 'A', 'B']
+const correctAnswers = ['E', 'B', 'C', 'A', 'D']
 
-form.addEventListener('submit', event => {
-    event.preventDefault()
+let score = 0 
+
+const getUsersAnswers = () => {
+    let userAnswers = []
+
+    correctAnswers.forEach((_, index) => {
+        const userAnswer = form[`inputQuestion${index + 1}`].value
+        userAnswers.push(userAnswer)
+    })
     
-    let score = 0
+    return userAnswers
+}
 
-
-    const userAnswers = [
-        form.inputQuestion1.value,
-        form.inputQuestion2.value,
-        form.inputQuestion3.value,
-        form.inputQuestion4.value,
-        form.inputQuestion5.value
-    ]
-    
-    const checkAnswers = userAnswers.map((answer, index) => {
-        if(answer === correctAnswers[index]) {
+const calculateUserScore = (userAnswers) => {
+    userAnswers.map((answer, index) => {
+        const isUserAnswersCorrect = answer === correctAnswers[index]
+        if(isUserAnswersCorrect) {
             score += 20
         }
     })
+}
 
-    scrollTo(0, 0)
-    viewScore.classList.remove('d-none')
-    let toFinalScore = 0 
-
+const animateFinalScore = () => {   
+    let counter = 0 
     const timer = setInterval(() => {
-
-        if(toFinalScore === score){
-            clearInterval(timer)
-            return
-        }
-    
-        toFinalScore++
-        scores.textContent = toFinalScore
         
-    }, 50);    
-})
+        if(counter === score){
+            clearInterval(timer)
+        }
 
-buttonPlayAgain.addEventListener('click', () => {
+        finalScore.textContent = `${counter++}`   
+    
+    }, 20);    
+}
+
+const showFinalScore = () => {
+    scrollTo(0, 0)
+    finalScoreContainer.classList.remove('d-none')
+}
+
+const reloadPage = () => {
     location.reload()
-})
+}
+
+const formOnSubmit = event => {
+    event.preventDefault()
+
+    const userAnswers = getUsersAnswers()
+    calculateUserScore(userAnswers)
+    showFinalScore()
+    animateFinalScore()
+}
+
+    
+
+form.addEventListener('submit', formOnSubmit)
+buttonPlayAgain.addEventListener('click', reloadPage)

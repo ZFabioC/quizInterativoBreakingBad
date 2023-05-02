@@ -2,6 +2,7 @@ const form = document.querySelector('.quiz-form')
 const finalScoreContainer = document.querySelector('.final-score-container')
 const finalScore = document.querySelector('.final-score')
 const buttonPlayAgain = document.querySelector('.play-again')
+const buttonOnSubmit = document.querySelector('.button-submit')
 
 const correctAnswers = ['E', 'B', 'C', 'A', 'D']
 
@@ -41,24 +42,29 @@ const animateFinalScore = () => {
 }
 
 const showFinalScore = () => {
-    scrollTo(0, 0)
     finalScoreContainer.classList.remove('d-none')
+    scrollTo(0, 0)
+    
+
 }
 
 const reloadPage = () => {
     location.reload()
 }
 
+const removeButton = () => {
+    buttonOnSubmit.classList.add('d-none')
+}
+
 const formOnSubmit = event => {
     event.preventDefault()
 
+    removeButton()
     const userAnswers = getUsersAnswers()
     calculateUserScore(userAnswers)
     showFinalScore()
     animateFinalScore()
 }
-
-    
 
 form.addEventListener('submit', formOnSubmit)
 buttonPlayAgain.addEventListener('click', reloadPage)
